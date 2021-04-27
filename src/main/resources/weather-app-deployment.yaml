@@ -1,0 +1,53 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: weather-app-deployment
+  labels:
+    app: weather-app
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: weather-app
+  template:
+    metadata:
+      labels:
+        app: weather-app
+    spec:
+      containers:
+        - name: weather-app
+          image: weather-app-docker-img #Name of dockerized application
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 8080
+          env:
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-username
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: mongodb-secret
+                  key: mongo-root-password
+            - name: MONGO_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: mongodb-configmap
+                  key: database_url
+
+---
+apiVersion: v1
+kind: Service  #External Service
+metadata:
+  name: weather-app-service
+spec:
+  selector:
+    app: weather-app
+  type: LoadBalancer  #The LoadBalancer assigns service an external IP address so that it gets external requests
+  ports:
+    - protocol: TCP
+      port: 8083
+      targetPort: 8080
+      nodePort: 30018 #Port for external IP address, port you need to put into browser (must be in 30000 to 32767)
