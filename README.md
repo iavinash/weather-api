@@ -1,4 +1,4 @@
-# weather-api
+# Reactive Restful Weather-api
 Simple reactive weather-api, build on Spring Webflux with Reactive MongoDB. This version of the app is ready to deploy on the Kubernetes cluster.
 
 # Libraries used
