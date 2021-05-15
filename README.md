@@ -15,3 +15,5 @@ Simple reactive weather-api, build on Spring Webflux with MongoDB. This version 
 
 # Dockerized Version
 This project is Dockernized and ready to deploy on `Kubernetes.` The files related to `K8s` can be found [here](/src/main/resources/)
+# Docker Command to build image
+* `docker build -t weather-app-docker-img .` - This will build an image with the name of `weather-app-docker-img`
